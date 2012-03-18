@@ -1,7 +1,7 @@
 class Appointments < ActiveRecord::Base
   belongs_to :medic
   belongs_to :patient
-  def Appointments.createAppointment(begin_time,end_time,medic_id,patient_id)
+  def Appointments.assignAppointment(begin_time,end_time,medic_id,patient_id)
     begin
       if Medic.find(medic_id) and Patient.find(patient_id)
 	begin
@@ -26,14 +26,14 @@ class Appointments < ActiveRecord::Base
     paciente_2=Patient.create(:name =>"paciente2",:address =>"direccion paciente2")
     cita_1=Appointments.create(:begin_time =>"2012-03-11 14:00:00",:end_time =>"2012-03-11 15:00:00",:medic_id => medico_1.id,:patient_id => paciente_1.id)
     #creando citas, no validas por datetime, de prueba
-    Appointments.createAppointment("2012-03-11 14:01:00","2012-03-11 14:30:00",medico_2.id,paciente_2.id)
-    Appointments.createAppointment("2012-03-11 13:00:00","2012-03-11 14:30:00",medico_2.id,paciente_2.id)
-    Appointments.createAppointment("2012-03-11 13:01:00","2012-03-11 16:30:00",medico_2.id,paciente_2.id)
+    Appointments.assignAppointment("2012-03-11 14:01:00","2012-03-11 14:30:00",medico_2.id,paciente_2.id)
+    Appointments.assignAppointment("2012-03-11 13:00:00","2012-03-11 14:30:00",medico_2.id,paciente_2.id)
+    Appointments.assignAppointment("2012-03-11 13:01:00","2012-03-11 16:30:00",medico_2.id,paciente_2.id)
     #creando citas, no valida por medic_id o patiente_id, de prueba
-    Appointments.createAppointment("2012-03-11 15:30:00","2012-03-11 16:00:00",Medic.last.id+1,paciente_2.id)
-    Appointments.createAppointment("2012-03-11 15:30:00","2012-03-11 16:00:00",medico_2.id,Patient.last.id+1)
+    Appointments.assignAppointment("2012-03-11 15:30:00","2012-03-11 16:00:00",Medic.last.id+1,paciente_2.id)
+    Appointments.assignAppointment("2012-03-11 15:30:00","2012-03-11 16:00:00",medico_2.id,Patient.last.id+1)
     #cita valida
-    Appointments.createAppointment("2012-03-11 15:30:00","2012-03-11 16:00:00",medico_2.id,paciente_2.id)
+    Appointments.assignAppointment("2012-03-11 15:30:00","2012-03-11 16:00:00",medico_2.id,paciente_2.id)
     #update de citas no validas
     Appointments.editAppointment(cita_1.id,Medic.last.id+1,"2012-03-11 15:30:00","2012-03-11 15:30:00")
     Appointments.editAppointment(cita_1.id,medico_1.id,"2012-03-11 15:31:00","2012-03-11 15:50:00")
